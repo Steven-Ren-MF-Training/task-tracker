@@ -1,6 +1,5 @@
 terminate_program = False
 
-
 #dictionary used to store user detail as dictionary
 contacts = {"0412345678":"Steven","04555666777":"Sam","0412309876":"Logan"}
 def display_options():
