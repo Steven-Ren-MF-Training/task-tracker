@@ -1,5 +1,7 @@
 ## Project Structure
 
-- task_input.py: Collects basic task information from the user using variables and input/output.
-- task_priority.py: Adds priority logic using conditionals and a while loop.
-- task_tracker.py: Refactored version using functions, scope, and docstrings.r is a Python application that allows users to enter and manage task information. By the end of the course, the application will support features such as task priorities, estimated completion time, urgency, and completion status.
+* `task_tracker_refactor/greet_user.py`: Displays the welcome message to the user.
+* `task_tracker_refactor/get_task_input.py`: Collects the task name from user input.
+* `task_tracker_refactor/get_priority_input.py`: Collects the task priority from user input.
+* `task_tracker_refactor/check_priority.py`: Returns the appropriate priority message based on the input value.
+* `task_tracker_refactor/run_tracker.py`: Combines all functions and controls the program using a `while` loop.
