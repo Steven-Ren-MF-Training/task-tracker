@@ -22,3 +22,12 @@ to save tasks between program sessions instead of losing all task data when the 
 Without catching FileNotFoundError, the program would crash the first time it runs 
 if tasks.json does not exist. Error handling supports the QA mindset because it considers invalid inputs and unexpected situations before they cause failures. 
 It helps make the program more reliable and improves the user experience.
+
+### Day 3:
+* `task.py` : Task class which encapsulates the task with method and attribute.
+* `task_manager_day6/task_manager.py`: Update the task_manager_day6/task_manager.py using task object
+
+The Task Manager was refactored so that each task is now represented by a Task object instead of a plain dictionary. 
+Encapsulation protects the priority and completion status by storing them as private attributes and controlling access through getters, setters, and methods. 
+The to_dict() method is needed because custom Task objects cannot be written directly to JSON. 
+The from_dict() class method converts the saved JSON dictionary data back into Task objects when the program starts.

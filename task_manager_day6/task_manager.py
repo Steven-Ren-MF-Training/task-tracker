@@ -1,4 +1,5 @@
 import json
+from task import Task
 
 TASK_FILE = 'tasks.json'
 
@@ -9,7 +10,8 @@ def save_tasks():
     """Save the updated tasks list to JSON file"""
     try:
         with open(TASK_FILE, "w") as file_data:
-            json.dump(tasks, file_data, indent=4)
+            tasks_dict = [task.to_dict() for task in tasks]
+            json.dump(tasks_dict, file_data, indent=4)
             print("tasks saved!")
     except FileNotFoundError:
             print("No saved file found. Starting with an empty task list.")
@@ -20,8 +22,8 @@ def load_tasks():
     global tasks
     try:
         with open(TASK_FILE, "r") as file:
-            tasks = json.load(file)
-
+            task_data = json.load(file)
+            tasks = [Task.from_dict(item) for item in task_data]
         print(f"Loaded {len(tasks)} task(s).")
 
     except FileNotFoundError:
@@ -34,52 +36,33 @@ def load_tasks():
 
 def add_task(name, priority, estimated_time):
     """Create a task dictionary and add it to the global task list."""
-    task = {
-        "name": name,
-        "priority": priority,
-        "is_complete": False,
-        "estimated_time": estimated_time,
-    }
-
+    task = Task(name=name,priority=priority,estimated_time=estimated_time)
     tasks.append(task)
     print(f"Task added: {name}")
-
 
 def view_tasks():
     """Display all tasks currently stored in the task list."""
     if not tasks:
         print("No tasks found.")
         return
-    index = 1
-    for task in tasks:
-        if task['is_complete']:
-            status = "Completed"
-        else :
-            status = "Pending"
-        print(
-            f"{index}. {task['name']} | "
-            f"Priority: {task['priority']} | "
-            f"Status: {status} | "
-            f"Est. Time: {task['estimated_time']} mins"
-        )
-        index +=1
+    for index, task in enumerate(tasks, start=1):
+        print(f"{index}. {task}")
 
 
-def complete_task(index):
+def complete_task(task_number):
     """Mark the task at the specified zero-based index as complete."""
-    if 0 <= index < len(tasks):
-        tasks[index]["is_complete"] = True
-        print(f"Task marked complete: {tasks[index]['name']}")
+    if 0 < task_number < len(tasks):
+        tasks[task_number-1].mark_complete()
     else:
         print("Invalid task number.")
 
 
-def delete_task(index):
+def delete_task(task_number):
 
     """Delete the task at the specified zero-based index."""
-    if 0 <= index < len(tasks):
-        deleted_task = tasks.pop(index)
-        print(f"Task deleted: {deleted_task['name']}")
+    if 0 < task_number <= len(tasks):
+        deleted_task = tasks.pop(task_number-1)
+        print(f"Task deleted: {deleted_task.get_name()}")
     else:
         print("Invalid task number.")
 
@@ -120,7 +103,7 @@ def run_manager():
                     task_number = int(
                         input("Enter task number to mark complete: ")
                     )
-                    complete_task(task_number - 1)
+                    complete_task(task_number)
                 except ValueError:
                     print("Task number must be a whole number.")
 
@@ -132,7 +115,7 @@ def run_manager():
                     task_number = int(
                         input("Enter task number to delete: ")
                     )
-                    delete_task(task_number - 1)
+                    delete_task(task_number)
                 except ValueError:
                     print("Task number must be a whole number.")
         elif option == "save":
