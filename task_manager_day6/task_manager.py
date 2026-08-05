@@ -1,5 +1,36 @@
+import json
+
+TASK_FILE = 'tasks.json'
+
 tasks = []
 END_MESSAGE = "End session, goodbye!"
+
+def save_tasks():
+    """Save the updated tasks list to JSON file"""
+    try:
+        with open(TASK_FILE, "w") as file_data:
+            json.dump(tasks, file_data, indent=4)
+            print("tasks saved!")
+    except FileNotFoundError:
+            print("No saved file found. Starting with an empty task list.")
+
+
+def load_tasks():
+    """load tasks list to initialize"""
+    global tasks
+    try:
+        with open(TASK_FILE, "r") as file:
+            tasks = json.load(file)
+
+        print(f"Loaded {len(tasks)} task(s).")
+
+    except FileNotFoundError:
+        tasks = []
+        print("No saved file found. Starting with an empty task list.")
+
+    except json.JSONDecodeError:
+        tasks = []
+        print("The save file is corrupted. Starting with an empty task list.")
 
 def add_task(name, priority, estimated_time):
     """Create a task dictionary and add it to the global task list."""
@@ -44,6 +75,7 @@ def complete_task(index):
 
 
 def delete_task(index):
+
     """Delete the task at the specified zero-based index."""
     if 0 <= index < len(tasks):
         deleted_task = tasks.pop(index)
@@ -51,12 +83,16 @@ def delete_task(index):
     else:
         print("Invalid task number.")
 
+
 def run_manager():
     """Run the Task Manager until the user chooses to quit."""
     print("Welcome to the Task Manager!")
 
+    '''Initialization'''
+    load_tasks()
+
     while True:
-        print("\nOptions: add | view | complete | delete | quit")
+        print("\nOptions: add | view | complete | delete | save | quit")
         option = input("Choose an option: ").strip().lower()
 
         if option == "add":
@@ -99,8 +135,11 @@ def run_manager():
                     delete_task(task_number - 1)
                 except ValueError:
                     print("Task number must be a whole number.")
+        elif option == "save":
+            save_tasks()
 
         elif option == "quit":
+            save_tasks()
             print(END_MESSAGE)
             break
 
