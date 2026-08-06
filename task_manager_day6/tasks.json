@@ -1,14 +1,10 @@
 [
     {
-        "name": "Play",
-        "priority": "low",
-        "estimated_time": 30,
-        "is_complete": true
-    },
-    {
-        "name": "eat",
+        "type": "UrgentTask",
+        "name": "onboarding",
         "priority": "high",
-        "estimated_time": 30,
-        "is_complete": false
+        "estimated_time": 120,
+        "is_complete": false,
+        "deadline": "2026-08-08"
     }
 ]
