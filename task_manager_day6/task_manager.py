@@ -1,5 +1,5 @@
 import json
-from task import Task
+from task import Task,UrgentTask,RecurringTask,task_from_dict
 
 TASK_FILE = 'tasks.json'
 
@@ -23,7 +23,7 @@ def load_tasks():
     try:
         with open(TASK_FILE, "r") as file:
             task_data = json.load(file)
-            tasks = [Task.from_dict(item) for item in task_data]
+            tasks = [task_from_dict(item) for item in task_data]
         print(f"Loaded {len(tasks)} task(s).")
 
     except FileNotFoundError:
@@ -67,6 +67,63 @@ def delete_task(task_number):
         print("Invalid task number.")
 
 
+def add_urgent_task():
+    """Collect input and add an urgent task to the task list."""
+    name = input("Task name: ").strip()
+
+    try:
+        estimated_time = int(
+            input("Estimated time in minutes: ")
+        )
+    except ValueError:
+        print("Estimated time must be a whole number.")
+        return
+
+    deadline = input(
+        "Deadline (e.g. 2024-12-01): "
+    ).strip()
+
+    task = UrgentTask(
+        name=name,
+        estimated_time=estimated_time,
+        deadline=deadline,
+    )
+
+    tasks.append(task)
+    print(f"Urgent task added: {name}")
+
+
+def add_recurring_task():
+    """Collect input and add a recurring task to the task list."""
+    name = input("Task name: ").strip()
+
+    priority = input(
+        "Priority (high, medium, low): "
+    ).strip().lower()
+
+    try:
+        estimated_time = int(
+            input("Estimated time in minutes: ")
+        )
+    except ValueError:
+        print("Estimated time must be a whole number.")
+        return
+
+    frequency = input(
+        "Frequency (e.g. daily, weekly): "
+    ).strip()
+
+    task = RecurringTask(
+        name=name,
+        priority=priority,
+        estimated_time=estimated_time,
+        frequency=frequency,
+    )
+
+    tasks.append(task)
+    print(f"Recurring task added: {name}")
+
+
 def run_manager():
     """Run the Task Manager until the user chooses to quit."""
     print("Welcome to the Task Manager!")
@@ -75,7 +132,7 @@ def run_manager():
     load_tasks()
 
     while True:
-        print("\nOptions: add | view | complete | delete | save | quit")
+        print("\nOptions: add | view | complete | delete | save | add-recurring | add-urgent | quit")
         option = input("Choose an option: ").strip().lower()
 
         if option == "add":
@@ -91,6 +148,11 @@ def run_manager():
                 add_task(name, priority, estimated_time)
             except ValueError:
                 print("Estimated time must be a whole number.")
+        elif option == "add-urgent":
+            add_urgent_task()
+
+        elif option == "add-recurring":
+            add_recurring_task()
 
         elif option == "view":
             view_tasks()
@@ -131,6 +193,7 @@ def run_manager():
                 "Invalid option. Please choose add, view, "
                 "complete, delete, or quit."
             )
+
 
 
 run_manager()

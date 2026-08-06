@@ -36,6 +36,7 @@ class Task:
     def to_dict(self):
         """Convert the Task object into a dictionary for JSON storage."""
         return {
+            "type": "Task",
             "name": self.name,
             "priority": self.__priority,
             "estimated_time": self.estimated_time,
@@ -66,3 +67,96 @@ class Task:
             f"Status: {status} | "
             f"Est. Time: {self.estimated_time} mins"
         )
+
+class UrgentTask(Task):
+    def __init__(self, name, estimated_time, deadline):
+        super().__init__(name, "high", estimated_time)
+        self.deadline = deadline
+
+    def __str__(self):
+        if self.get_is_complete():
+            status = "Done"
+        else:
+            status  = "Pending"
+
+        return (
+            f"[URGENT] {self.name} | "
+            f"Status: {status} | "
+            f"Est. Time: {self.estimated_time} mins | "
+            f"Deadline: {self.deadline}"
+        )
+
+    def to_dict(self):
+        """Convert the UrgentTask object into a dictionary."""
+        task_data = super().to_dict()
+        task_data["type"] = "UrgentTask"
+        task_data["deadline"] = self.deadline
+        return task_data
+
+class RecurringTask(Task):
+    def __init__(self, name, priority, estimated_time, frequency):
+        """Initialize a recurring task with a frequency."""
+        super().__init__(name, priority, estimated_time)
+        self.frequency = frequency
+
+    def __str__(self):
+        if self.get_is_complete():
+            status = "Done"
+        else:
+            status  = "Pending"
+        return (
+            f"[RECURRING: {self.frequency}] {self.name} | "
+            f"Priority: {self.get_priority()} | "
+            f"Status: {status} | "
+            f"Est. Time: {self.estimated_time} mins"
+        )
+
+    def reset(self):
+        """Reset the task completion status to incomplete."""
+        self.__is_complete = False
+
+    def to_dict(self):
+        """Convert the RecurringTask object into a dictionary."""
+        task_data = super().to_dict()
+        task_data["type"] = "RecurringTask"
+        task_data["frequency"] = self.frequency
+        return task_data
+
+
+def task_from_dict(data):
+    task_type = data.get("type", "Task")
+
+    if task_type == "UrgentTask":
+        task = UrgentTask(
+            data["name"],
+            data["estimated_time"],
+            data["deadline"],
+        )
+    elif task_type == "RecurringTask":
+        task = RecurringTask(
+            data["name"],
+            data["priority"],
+            data["estimated_time"],
+            data["frequency"],
+        )
+    else:
+        return Task.from_dict(data)
+
+    if data.get("is_complete", False):
+        task.mark_complete()
+
+    return task
+
+
+if __name__ == "__main__":
+    demo_tasks = [
+        Task("Buy groceries", "low", 30),
+        UrgentTask("Fix server outage", 5, "2024-12-01"),
+        RecurringTask("Team standup", "medium", 15, "daily")
+    ]
+
+    print("--- Polymorphism Demo ---")
+    for task in demo_tasks:
+        print(task)
+        print("Is a Task instance:", isinstance(task, Task))
+        print()
