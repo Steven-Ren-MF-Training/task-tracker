@@ -49,3 +49,37 @@
 
 -During the self-review, I found that `complete_task()` rejected the last task in the list because its range check used `< len(tasks)`. I changed the condition to `<= len(tasks)`, which allows the displayed one-based task number to include the final task while still safely accessing it with `tasks[task_number - 1]`.
 -Using set_priority() method in the constructor of Task to handle the invalid priority input when creating a new task.
+
+
+
+## Release Readiness Checklist: Task Manager v1.0
+
+### Code Quality
+
+* [x] All functions and methods have docstrings
+* [x] No unused variables or commented-out code blocks remain
+* [x] Variable and function names are descriptive
+
+### Testing
+
+* [x] All unit tests pass with zero failures
+* [x] Edge cases are covered in tests
+* [x] All three task types have been manually tested end to end
+
+### Documentation
+
+* [x] README is complete and up to date
+* [x] Project Structure section lists all final project files
+* [x] Known bugs and resolved issues are documented in `bug_report.md`
+* [x] Future improvements are listed
+
+### Version Control
+
+* [x] All changes committed with clear messages
+* [x] Repository is public and accessible
+
+### File Persistence
+
+* [x] `tasks.json` is generated correctly on save
+* [x] Tasks reload correctly on restart for `Task`, `UrgentTask`, and `RecurringTask`
+
