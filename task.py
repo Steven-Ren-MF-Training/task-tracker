@@ -4,8 +4,8 @@ class Task:
         """Initialize a task with a name, priority, and estimated time."""
         self.name = name
         self.estimated_time = estimated_time
-        self.__priority = priority
-        self.__is_complete = False
+        self._is_complete = False
+        self.set_priority(priority)
 
     def get_priority(self):
         """Return the task priority."""
@@ -26,11 +26,11 @@ class Task:
 
     def get_is_complete(self):
         """Return whether the task is complete."""
-        return self.__is_complete
+        return self._is_complete
 
     def mark_complete(self):
         """Mark the task as complete."""
-        self.__is_complete = True
+        self._is_complete = True
         print(f"{self.name} was marked completed")
 
     def to_dict(self):
@@ -40,7 +40,7 @@ class Task:
             "name": self.name,
             "priority": self.__priority,
             "estimated_time": self.estimated_time,
-            "is_complete": self.__is_complete,
+            "is_complete": self._is_complete,
         }
 
     @classmethod
@@ -59,7 +59,7 @@ class Task:
 
     def __str__(self):
         """Return a readable string representation of the task."""
-        status = "Done" if self.__is_complete else "Pending"
+        status = "Done" if self._is_complete else "Pending"
 
         return (
             f"{self.name} | "
@@ -69,11 +69,14 @@ class Task:
         )
 
 class UrgentTask(Task):
+    """Represent a high-priority task with a deadline."""
     def __init__(self, name, estimated_time, deadline):
+        """Initialize an urgent task with high priority and a deadline."""
         super().__init__(name, "high", estimated_time)
         self.deadline = deadline
 
     def __str__(self):
+        """Return a readable string with an urgent label and deadline."""
         if self.get_is_complete():
             status = "Done"
         else:
@@ -100,6 +103,7 @@ class RecurringTask(Task):
         self.frequency = frequency
 
     def __str__(self):
+        """Return a readable string with a recurring label and deadline."""
         if self.get_is_complete():
             status = "Done"
         else:
@@ -113,7 +117,7 @@ class RecurringTask(Task):
 
     def reset(self):
         """Reset the task completion status to incomplete."""
-        self.__is_complete = False
+        self._is_complete = False
 
     def to_dict(self):
         """Convert the RecurringTask object into a dictionary."""
@@ -124,6 +128,7 @@ class RecurringTask(Task):
 
 
 def task_from_dict(data):
+    """Create and return the correct task type from dictionary data."""
     task_type = data.get("type", "Task")
 
     if task_type == "UrgentTask":

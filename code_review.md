@@ -45,6 +45,7 @@
 
 > Before submission, compare this list with the repository and add any additional files that are present.
 
-## One Improvement I Made
+## Two Improvement I Made
 
-During the self-review, I found that `complete_task()` rejected the last task in the list because its range check used `< len(tasks)`. I changed the condition to `<= len(tasks)`, which allows the displayed one-based task number to include the final task while still safely accessing it with `tasks[task_number - 1]`.
+-During the self-review, I found that `complete_task()` rejected the last task in the list because its range check used `< len(tasks)`. I changed the condition to `<= len(tasks)`, which allows the displayed one-based task number to include the final task while still safely accessing it with `tasks[task_number - 1]`.
+-Using set_priority() method in the constructor of Task to handle the invalid priority input when creating a new task.
