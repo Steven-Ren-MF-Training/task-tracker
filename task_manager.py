@@ -35,7 +35,7 @@ def load_tasks():
         print("The save file is corrupted. Starting with an empty task list.")
 
 def add_task(name, priority, estimated_time):
-    """Create a task dictionary and add it to the global task list."""
+    """Create a task object and add it to the global task list."""
     task = Task(name=name,priority=priority,estimated_time=estimated_time)
     tasks.append(task)
     print(f"Task added: {name}")
@@ -51,7 +51,7 @@ def view_tasks():
 
 def complete_task(task_number):
     """Mark the task at the specified zero-based index as complete."""
-    if 0 < task_number < len(tasks):
+    if 0 < task_number <= len(tasks):
         tasks[task_number-1].mark_complete()
     else:
         print("Invalid task number.")

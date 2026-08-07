@@ -1,0 +1,32 @@
+stevenren@Stevens-MacBook-Pro Pyramid Python % python3 -m unittest test_task.py -v
+test_recurring_str_contains_label (test_task.TestRecurringTask.test_recurring_str_contains_label) ... ok
+test_recurring_to_dict_includes_type (test_task.TestRecurringTask.test_recurring_to_dict_includes_type) ... ok
+test_reset (test_task.TestRecurringTask.test_reset)
+Verify reset changes a completed recurring task to incomplete. ... Team standup was marked completed
+ok
+test_from_dict (test_task.TestTask.test_from_dict)
+Verify Task.from_dict recreates a Task from dictionary data. ... ok
+test_initial_is_complete_false (test_task.TestTask.test_initial_is_complete_false)
+Verify a newly created task is initially incomplete. ... ok
+test_mark_complete (test_task.TestTask.test_mark_complete)
+Verify mark_complete sets the task completion status to True. ... Buy groceries was marked completed
+ok
+test_set_priority_invalid (test_task.TestTask.test_set_priority_invalid)
+Verify set_priority does not change priority for invalid input. ... Invalid priority. Please enter high, medium, or low.
+ok
+test_set_priority_valid (test_task.TestTask.test_set_priority_valid)
+Verify set_priority updates priority when given a valid value. ... ok
+test_str_output (test_task.TestTask.test_str_output)
+Verify Task string output contains its name and Pending status. ... ok
+test_task_creation (test_task.TestTask.test_task_creation)
+Verify a Task is created with the right values. ... ok
+test_to_dict (test_task.TestTask.test_to_dict) ... ok
+test_urgent_priority_is_always_high (test_task.TestUrgentTask.test_urgent_priority_is_always_high) ... ok
+test_urgent_str_contains_deadline (test_task.TestUrgentTask.test_urgent_str_contains_deadline) ... ok
+test_urgent_str_contains_label (test_task.TestUrgentTask.test_urgent_str_contains_label) ... ok
+test_urgent_to_dict_includes_type (test_task.TestUrgentTask.test_urgent_to_dict_includes_type) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.000s
+
+OK
